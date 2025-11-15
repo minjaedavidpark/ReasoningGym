@@ -1,4 +1,129 @@
-# ReasoningGym
-Reasoning Gym is a multi-agent Claude tutor that trains students to think through hard problems step-by-step instead of just handing them the answer.
+# 🧠 Reasoning Gym – Multi-Agent Study & Exam Coach
 
-Built for Anthropic AI Hackathon
+> **Track(s):**  
+> 🟦 Track 1 – Reasoning Systems (UofT AI)  
+> 🟩 General Track – Open Innovation  
+
+Reasoning Gym is a **multi-agent study coach** powered by Claude that trains students to *think* through hard problems instead of just handing them the answer.
+
+Students can:
+
+- Break down tough questions into smaller steps  
+- Get guided, Socratic help instead of full solutions  
+- Receive structured feedback on their own work  
+- Generate realistic study plans for upcoming exams  
+
+This project was built for the **Anthropic AI Hackathon @ UofT** (Nov 1–23, 2025).
+
+---
+
+## ✨ Key Features
+
+### 1. Guided Problem Solving (Socratic Coach)
+
+Paste a problem (math / CS / econ / theory / etc.) and Reasoning Gym will:
+
+- **Decompose** it into a sequence of reasoning steps  
+- Guide you through each step with questions and hints  
+- Adapt to your answers (gives more hints if you’re stuck)  
+- Only reveals the full solution outline after sufficient effort
+
+> Goal: build *your* reasoning muscles, not replace them.
+
+---
+
+### 2. Solution Critique (TA-Style Feedback)
+
+Paste the **problem** and your **attempted solution**.
+
+The system:
+
+- Checks for **logical gaps** and unjustified steps  
+- Highlights **missing edge cases** or incorrect assumptions  
+- Rewrites your solution in plain language so you can see if it matches what you meant  
+- Provides structured feedback: “What you did well / What to improve”
+
+---
+
+### 3. Study Planner for Courses & Exams
+
+Give Reasoning Gym:
+
+- Course name (e.g. “CSC458 – Computer Networks”)  
+- Topics or a rough syllabus  
+- Exam date & weekly study hours  
+
+It will:
+
+- Build a **realistic day-by-day study plan**  
+- Emphasize high-value topics and spaced review  
+- Generate **checkpoint questions** for each topic so you can self-test  
+
+---
+
+## 🧩 Multi-Agent Design
+
+Internally, Reasoning Gym uses **specialized Claude “agents”** implemented as separate prompt profiles:
+
+- 🧩 **Decomposer Agent** – breaks problems into steps & required concepts  
+- 🗣️ **Socratic Coach Agent** – interacts with the student step-by-step  
+- 🔍 **Critic / Verifier Agent** – evaluates solutions and explains issues  
+- 📅 **Planner Agent** – turns topics + constraints into a study schedule  
+- (Optional) 🧠 **Misconception Tracker** – surfaces recurring patterns of mistakes
+
+The frontend orchestrates these agents via a simple backend API, so each mode has a clear contract (inputs / outputs) but shares context when needed.
+
+---
+
+## 🛡️ Ethics & Academic Integrity
+
+Reasoning Gym is explicitly designed to **support learning**, not cheating.
+
+We implement several guardrails:
+
+- **No direct full solution by default** – the coach uses hints and questions first  
+- **“Show solution” is gated** – only appears after multiple attempts or user confirmation  
+- Clear **disclaimer**: do not paste take-home exams; use for practice & understanding  
+- Prompts encourage **reflection**: after solving, students are asked what they learned and what to do differently next time
+
+This aligns with the hackathon’s focus on **safe, human-centered AI** and responsible model use.
+
+---
+
+## 🏗️ Tech Stack
+
+- **Frontend:** Next.js (React + TypeScript), Tailwind CSS  
+- **Backend:** Next.js API routes / Node.js  
+- **LLM:** Anthropic Claude API  
+- **Storage (optional):** SQLite / Supabase / PostgreSQL (for saving sessions & history)
+
+> You can swap in your own stack; the core idea is agent-like prompt separation.
+
+---
+
+## 📂 Project Structure (example)
+
+```text
+.
+├── README.md
+├── package.json
+├── next.config.js
+├── /src
+│   ├── /pages
+│   │   ├── index.tsx             # Landing + mode selector
+│   │   ├── coach.tsx             # Guided Problem Solving UI
+│   │   ├── critique.tsx          # Solution Critique UI
+│   │   └── planner.tsx           # Study Planner UI
+│   ├── /pages/api
+│   │   ├── coach.ts              # Calls Decomposer + Socratic Coach agents
+│   │   ├── critique.ts           # Calls Critic / Verifier agent
+│   │   └── planner.ts            # Calls Planner agent
+│   ├── /components
+│   │   ├── ChatPanel.tsx
+│   │   ├── ProblemInput.tsx
+│   │   ├── StudyPlanView.tsx
+│   │   └── Layout.tsx
+│   └── /lib
+│       ├── anthropicClient.ts    # Thin wrapper around Claude API
+│       └── prompts.ts            # System prompts for each agent role
+└── .env.local
