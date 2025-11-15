@@ -32,9 +32,9 @@ export default function ProblemInput({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="problem" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="problem" className="block text-base font-semibold text-gray-800 mb-3">
           Problem Statement
         </label>
         <textarea
@@ -42,14 +42,14 @@ export default function ProblemInput({
           value={problem}
           onChange={(e) => setProblem(e.target.value)}
           placeholder={placeholder}
-          className="w-full h-40 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          className="w-full h-48 px-5 py-4 glass-strong rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none text-gray-800 placeholder-gray-400 transition-all"
           disabled={loading}
         />
       </div>
 
       {showSolutionInput && (
         <div>
-          <label htmlFor="solution" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="solution" className="block text-base font-semibold text-gray-800 mb-3">
             Your Solution/Attempt
           </label>
           <textarea
@@ -57,7 +57,7 @@ export default function ProblemInput({
             value={solution}
             onChange={(e) => setSolution(e.target.value)}
             placeholder="Paste your solution or attempted work here..."
-            className="w-full h-40 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+            className="w-full h-48 px-5 py-4 glass-strong rounded-2xl focus:ring-2 focus:ring-purple-500/50 focus:border-transparent resize-none text-gray-800 placeholder-gray-400 transition-all"
             disabled={loading}
           />
         </div>
@@ -66,11 +66,11 @@ export default function ProblemInput({
       <button
         type="submit"
         disabled={loading || !problem.trim()}
-        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]"
+        className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
       >
         {loading ? (
           <span className="flex items-center justify-center">
-            <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+            <svg className="animate-spin h-6 w-6 mr-3" viewBox="0 0 24 24">
               <circle
                 className="opacity-25"
                 cx="12"
