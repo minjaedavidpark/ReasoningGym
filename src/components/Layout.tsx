@@ -10,34 +10,34 @@ export default function Layout({ children, title }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       {/* Header with glass morphism */}
-      <header className="glass-strong sticky top-0 z-50">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-3 group">
               <span className="text-3xl group-hover:scale-110 transition-transform duration-300">
                 🧠
               </span>
-              <span className="text-2xl font-semibold tracking-tight text-gradient-blue">
+              <span className="text-xl font-semibold tracking-tight bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Reasoning Gym
               </span>
             </Link>
 
-            <nav className="flex items-center space-x-2">
+            <nav className="flex items-center space-x-1">
               <Link
                 href="/coach"
-                className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-full hover:bg-blue-50/50 transition-all duration-200"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-full hover:bg-gray-100/80 transition-all duration-200"
               >
                 Coach
               </Link>
               <Link
                 href="/critique"
-                className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:text-purple-600 rounded-full hover:bg-purple-50/50 transition-all duration-200"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-purple-600 rounded-full hover:bg-gray-100/80 transition-all duration-200"
               >
                 Critique
               </Link>
               <Link
                 href="/planner"
-                className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:text-green-600 rounded-full hover:bg-green-50/50 transition-all duration-200"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-green-600 rounded-full hover:bg-gray-100/80 transition-all duration-200"
               >
                 Planner
               </Link>
@@ -57,7 +57,7 @@ export default function Layout({ children, title }: LayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="mt-24 glass-strong">
+      <footer className="mt-24 bg-white/80 backdrop-blur-xl border-t border-gray-200/50">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
           <div className="text-center">
             <p className="text-sm font-medium text-gray-700">
