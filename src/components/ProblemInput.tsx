@@ -34,7 +34,10 @@ export default function ProblemInput({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="problem" className="block text-base font-semibold text-gray-800 mb-3">
+        <label
+          htmlFor="problem"
+          className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
+        >
           Problem Statement
         </label>
         <textarea
@@ -42,14 +45,17 @@ export default function ProblemInput({
           value={problem}
           onChange={(e) => setProblem(e.target.value)}
           placeholder={placeholder}
-          className="w-full h-48 px-5 py-4 rounded-2xl border-2 border-blue-200/50 bg-gradient-to-br from-white to-blue-50/40 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-300 resize-none text-gray-900 placeholder-gray-500 transition-all"
+          className="w-full h-48 px-5 py-4 rounded-2xl border-2 border-blue-200/50 dark:border-blue-700/50 bg-gradient-to-br from-white to-blue-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-300 dark:focus:border-blue-600 resize-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all"
           disabled={loading}
         />
       </div>
 
       {showSolutionInput && (
         <div>
-          <label htmlFor="solution" className="block text-base font-semibold text-gray-800 mb-3">
+          <label
+            htmlFor="solution"
+            className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
+          >
             Your Solution/Attempt
           </label>
           <textarea
@@ -57,7 +63,7 @@ export default function ProblemInput({
             value={solution}
             onChange={(e) => setSolution(e.target.value)}
             placeholder="Paste your solution or attempted work here..."
-            className="w-full h-48 px-5 py-4 rounded-2xl border-2 border-purple-200/50 bg-gradient-to-br from-white to-purple-50/40 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-300 resize-none text-gray-900 placeholder-gray-500 transition-all"
+            className="w-full h-48 px-5 py-4 rounded-2xl border-2 border-purple-200/50 dark:border-purple-700/50 bg-gradient-to-br from-white to-purple-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-300 dark:focus:border-purple-600 resize-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all"
             disabled={loading}
           />
         </div>

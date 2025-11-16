@@ -43,16 +43,18 @@ export default function ChatPanel({
   };
 
   return (
-    <div className="flex flex-col h-[650px] rounded-3xl overflow-hidden border-2 border-blue-200/50 bg-gradient-to-br from-white via-blue-50/20 to-purple-50/30">
+    <div className="flex flex-col h-[650px] rounded-3xl overflow-hidden border-2 border-blue-200/50 dark:border-blue-700/50 bg-gradient-to-br from-white via-blue-50/20 to-purple-50/30 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-8 space-y-4">
         {messages.length === 0 ? (
-          <div className="text-center text-gray-600 mt-16">
+          <div className="text-center text-gray-600 dark:text-gray-400 mt-16">
             <div className="text-5xl mb-4">💬</div>
-            <p className="text-xl font-medium text-gray-900">
+            <p className="text-xl font-medium text-gray-900 dark:text-gray-100">
               Start your conversation with the coach
             </p>
-            <p className="text-sm text-gray-600 mt-2">Ask questions, share your thinking...</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              Ask questions, share your thinking...
+            </p>
           </div>
         ) : (
           messages.map((message, index) => (
@@ -64,7 +66,7 @@ export default function ChatPanel({
                 className={`max-w-[85%] rounded-2xl px-6 py-4 ${
                   message.role === 'user'
                     ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white'
-                    : 'bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-50 border-2 border-purple-300/50 text-gray-800'
+                    : 'bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-50 dark:from-purple-900/40 dark:via-blue-900/40 dark:to-cyan-900/40 border-2 border-purple-300/50 dark:border-purple-700/50 text-gray-800 dark:text-gray-200'
                 }`}
               >
                 <div className="whitespace-pre-wrap break-words leading-relaxed">
@@ -73,7 +75,9 @@ export default function ChatPanel({
                 {message.timestamp && (
                   <div
                     className={`text-xs mt-2 ${
-                      message.role === 'user' ? 'text-blue-100' : 'text-purple-800'
+                      message.role === 'user'
+                        ? 'text-blue-100'
+                        : 'text-purple-800 dark:text-purple-300'
                     }`}
                   >
                     {message.timestamp.toLocaleTimeString()}
@@ -85,7 +89,7 @@ export default function ChatPanel({
         )}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-50 border-2 border-purple-300/50 rounded-2xl px-6 py-4">
+            <div className="bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-50 dark:from-purple-900/40 dark:via-blue-900/40 dark:to-cyan-900/40 border-2 border-purple-300/50 dark:border-purple-700/50 rounded-2xl px-6 py-4">
               <div className="flex space-x-2">
                 <div
                   className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce"
@@ -107,7 +111,7 @@ export default function ChatPanel({
       </div>
 
       {/* Input Area */}
-      <div className="border-t-2 border-blue-200/50 p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/20">
+      <div className="border-t-2 border-blue-200/50 dark:border-blue-700/50 p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/20 dark:from-gray-700/30 dark:to-gray-700/30">
         {showSolutionButton && onRequestSolution && (
           <div className="mb-4">
             <button
@@ -126,7 +130,7 @@ export default function ChatPanel({
             onChange={(e) => setInput(e.target.value)}
             placeholder={placeholder}
             disabled={loading}
-            className="flex-1 px-5 py-3 rounded-full border-2 border-blue-200/50 bg-gradient-to-r from-white to-blue-50/30 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-300 placeholder-gray-500 text-gray-900 transition-all"
+            className="flex-1 px-5 py-3 rounded-full border-2 border-blue-200/50 dark:border-blue-700/50 bg-gradient-to-r from-white to-blue-50/30 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-300 dark:focus:border-blue-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 transition-all"
           />
           <button
             type="submit"

@@ -85,9 +85,11 @@ export default function PlannerPage() {
     <Layout title="📅 Study Planner">
       <div className="max-w-4xl mx-auto">
         {/* Description */}
-        <div className="rounded-2xl p-8 mb-8 border-2 border-green-300/50 bg-gradient-to-br from-green-50 via-emerald-50/80 to-green-100/50">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Create Your Custom Study Plan</h2>
-          <ul className="space-y-3 text-gray-700">
+        <div className="rounded-2xl p-8 mb-8 border-2 border-green-300/50 dark:border-green-700/50 bg-gradient-to-br from-green-50 via-emerald-50/80 to-green-100/50 dark:from-green-900/30 dark:via-emerald-900/30 dark:to-green-800/30">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Create Your Custom Study Plan
+          </h2>
+          <ul className="space-y-3 text-gray-700 dark:text-gray-300">
             <li className="flex items-start">
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white text-xs font-bold mr-3 mt-0.5">
                 1
@@ -117,13 +119,13 @@ export default function PlannerPage() {
 
         {/* Input Form or Results */}
         {!studyPlan && !plainTextPlan ? (
-          <div className="rounded-3xl p-8 border-2 border-green-200/50 bg-gradient-to-br from-white via-green-50/30 to-emerald-50/40">
+          <div className="rounded-3xl p-8 border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-br from-white via-green-50/30 to-emerald-50/40 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
             <form onSubmit={handleGeneratePlan} className="space-y-6">
               {/* Course Name */}
               <div>
                 <label
                   htmlFor="courseName"
-                  className="block text-base font-semibold text-gray-800 mb-3"
+                  className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
                 >
                   Course Name
                 </label>
@@ -134,7 +136,7 @@ export default function PlannerPage() {
                   value={formData.courseName}
                   onChange={handleInputChange}
                   placeholder="e.g., CSC458 - Computer Networks"
-                  className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 placeholder-gray-500 transition-all"
+                  className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-r from-white to-green-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 dark:focus:border-green-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-all"
                   required
                   disabled={loading}
                 />
@@ -144,7 +146,7 @@ export default function PlannerPage() {
               <div>
                 <label
                   htmlFor="topics"
-                  className="block text-base font-semibold text-gray-800 mb-3"
+                  className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
                 >
                   Topics / Syllabus
                 </label>
@@ -154,7 +156,7 @@ export default function PlannerPage() {
                   value={formData.topics}
                   onChange={handleInputChange}
                   placeholder="List the topics or paste your syllabus here..."
-                  className="w-full h-40 px-5 py-4 rounded-2xl border-2 border-green-200/50 bg-gradient-to-br from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 placeholder-gray-500 resize-none transition-all"
+                  className="w-full h-40 px-5 py-4 rounded-2xl border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-br from-white to-green-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 dark:focus:border-green-600 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 resize-none transition-all"
                   required
                   disabled={loading}
                 />
@@ -165,7 +167,7 @@ export default function PlannerPage() {
                 <div>
                   <label
                     htmlFor="examDate"
-                    className="block text-base font-semibold text-gray-800 mb-3"
+                    className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
                   >
                     Exam Date
                   </label>
@@ -176,7 +178,7 @@ export default function PlannerPage() {
                     value={formData.examDate}
                     onChange={handleInputChange}
                     min={today}
-                    className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 transition-all"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-r from-white to-green-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 dark:focus:border-green-600 text-gray-900 dark:text-gray-100 transition-all"
                     required
                     disabled={loading}
                   />
@@ -185,7 +187,7 @@ export default function PlannerPage() {
                 <div>
                   <label
                     htmlFor="weeklyHours"
-                    className="block text-base font-semibold text-gray-800 mb-3"
+                    className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
                   >
                     Weekly Study Hours
                   </label>
@@ -197,7 +199,7 @@ export default function PlannerPage() {
                     onChange={handleInputChange}
                     min="1"
                     max="40"
-                    className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 transition-all"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-r from-white to-green-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 dark:focus:border-green-600 text-gray-900 dark:text-gray-100 transition-all"
                     required
                     disabled={loading}
                   />
@@ -208,7 +210,7 @@ export default function PlannerPage() {
               <div>
                 <label
                   htmlFor="currentLevel"
-                  className="block text-base font-semibold text-gray-800 mb-3"
+                  className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-3"
                 >
                   Current Understanding Level (Optional)
                 </label>
@@ -217,7 +219,7 @@ export default function PlannerPage() {
                   name="currentLevel"
                   value={formData.currentLevel}
                   onChange={handleInputChange}
-                  className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 transition-all"
+                  className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-r from-white to-green-50/40 dark:from-gray-700 dark:to-gray-700 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 dark:focus:border-green-600 text-gray-900 dark:text-gray-100 transition-all"
                   disabled={loading}
                 >
                   <option value="">Select (optional)</option>
@@ -265,7 +267,7 @@ export default function PlannerPage() {
             <div className="flex justify-end mb-6">
               <button
                 onClick={handleReset}
-                className="px-6 py-2 text-sm text-green-600 hover:text-green-700 font-semibold rounded-full hover:bg-green-50 transition-all"
+                className="px-6 py-2 text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold rounded-full hover:bg-green-50 dark:hover:bg-green-900/30 transition-all"
               >
                 Create Another Plan
               </button>
@@ -275,10 +277,12 @@ export default function PlannerPage() {
             {studyPlan ? (
               <StudyPlanView plan={studyPlan} />
             ) : (
-              <div className="rounded-3xl p-8 border-2 border-green-200/50 bg-gradient-to-br from-white via-green-50/30 to-emerald-50/40">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Your Study Plan</h3>
+              <div className="rounded-3xl p-8 border-2 border-green-200/50 dark:border-green-700/50 bg-gradient-to-br from-white via-green-50/30 to-emerald-50/40 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                  Your Study Plan
+                </h3>
                 <div className="prose prose-lg max-w-none">
-                  <pre className="whitespace-pre-wrap text-gray-700 font-sans leading-relaxed">
+                  <pre className="whitespace-pre-wrap text-gray-700 dark:text-gray-300 font-sans leading-relaxed">
                     {plainTextPlan}
                   </pre>
                 </div>
