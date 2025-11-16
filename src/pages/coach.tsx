@@ -137,31 +137,39 @@ export default function CoachPage() {
     <Layout title="🧩 Guided Problem Solving">
       <div className="max-w-4xl mx-auto">
         {/* Description */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">How it works</h2>
-          <ul className="space-y-2 text-sm text-gray-700">
+        <div className="rounded-2xl p-8 mb-8 border-2 border-blue-300/50 bg-gradient-to-br from-blue-50 via-cyan-50/80 to-blue-100/50">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">How it works</h2>
+          <ul className="space-y-3 text-gray-700">
             <li className="flex items-start">
-              <span className="text-blue-600 mr-2">1.</span>
-              Paste a challenging problem (math, CS, theory, etc.)
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-xs font-bold mr-3 mt-0.5">
+                1
+              </span>
+              <span>Paste a challenging problem (math, CS, theory, etc.)</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 mr-2">2.</span>
-              The coach will break it down and guide you step-by-step
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-xs font-bold mr-3 mt-0.5">
+                2
+              </span>
+              <span>The coach will break it down and guide you step-by-step</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 mr-2">3.</span>
-              Answer questions and work through each step
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-xs font-bold mr-3 mt-0.5">
+                3
+              </span>
+              <span>Answer questions and work through each step</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-600 mr-2">4.</span>
-              Get hints if you&apos;re stuck (not direct answers!)
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-xs font-bold mr-3 mt-0.5">
+                4
+              </span>
+              <span>Get hints if you&apos;re stuck (not direct answers!)</span>
             </li>
           </ul>
         </div>
 
         {/* Main Content */}
         {!started ? (
-          <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="rounded-3xl p-8 border-2 border-blue-200/50 bg-gradient-to-br from-white via-blue-50/30 to-cyan-50/40">
             <ProblemInput
               onSubmit={handleStartCoaching}
               placeholder="Paste your problem here... (e.g., a calculus problem, algorithm question, proof, etc.)"
@@ -172,15 +180,19 @@ export default function CoachPage() {
         ) : (
           <div>
             {/* Current Problem Display */}
-            <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+            <div className="rounded-2xl p-6 mb-6 border-2 border-blue-200/50 bg-gradient-to-br from-blue-50 to-cyan-50">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Current Problem:</h3>
-                  <p className="text-sm text-gray-600 whitespace-pre-wrap">{currentProblem}</p>
+                  <h3 className="text-sm font-bold text-blue-600 mb-3 uppercase tracking-wide">
+                    Current Problem
+                  </h3>
+                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                    {currentProblem}
+                  </p>
                 </div>
                 <button
                   onClick={handleReset}
-                  className="ml-4 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  className="ml-4 px-4 py-2 text-sm text-blue-600 hover:text-blue-700 font-semibold rounded-full hover:bg-blue-50 transition-all"
                 >
                   New Problem
                 </button>

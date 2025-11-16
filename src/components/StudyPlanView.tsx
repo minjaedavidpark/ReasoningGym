@@ -24,68 +24,83 @@ interface StudyPlanViewProps {
 
 export default function StudyPlanView({ plan }: StudyPlanViewProps) {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 space-y-6">
+    <div className="space-y-8">
       {/* Summary */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Study Plan Summary</h2>
-        <div className="grid grid-cols-3 gap-4">
+      <div className="rounded-3xl p-10 border-2 border-green-300/50 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Study Plan Summary</h2>
+        <div className="grid grid-cols-3 gap-8">
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-600">{plan.summary.totalWeeks}</div>
-            <div className="text-sm text-gray-600">Weeks</div>
+            <div className="text-5xl font-bold text-gradient-green mb-2">
+              {plan.summary.totalWeeks}
+            </div>
+            <div className="text-sm font-medium text-gray-600">Weeks</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600">{plan.summary.totalHours}</div>
-            <div className="text-sm text-gray-600">Total Hours</div>
+            <div className="text-5xl font-bold text-gradient-blue mb-2">
+              {plan.summary.totalHours}
+            </div>
+            <div className="text-sm font-medium text-gray-600">Total Hours</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600">{plan.summary.topicsCovered}</div>
-            <div className="text-sm text-gray-600">Topics</div>
+            <div className="text-5xl font-bold text-gradient-purple mb-2">
+              {plan.summary.topicsCovered}
+            </div>
+            <div className="text-sm font-medium text-gray-600">Topics</div>
           </div>
         </div>
       </div>
 
       {/* Weekly Schedule */}
       <div>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Weekly Breakdown</h3>
-        <div className="space-y-4">
-          {plan.schedule.map((week) => (
-            <div key={week.week} className="border border-gray-200 rounded-lg p-5">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="text-lg font-semibold text-gray-900">Week {week.week}</h4>
-                <span className="text-sm text-gray-500">
+        <h3 className="text-2xl font-bold text-gray-900 mb-6">Weekly Breakdown</h3>
+        <div className="space-y-5">
+          {plan.schedule.map((week, index) => (
+            <div
+              key={week.week}
+              className="rounded-2xl p-6 border-l-4 border-green-500 bg-gradient-to-br from-white via-green-50/40 to-emerald-50/30 hover-lift"
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xl font-bold text-gray-900">Week {week.week}</h4>
+                <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-white text-sm font-semibold">
                   {Object.values(week.hours).reduce((a, b) => a + b, 0)} hours
                 </span>
               </div>
 
-              <div className="mb-3">
-                <p className="text-sm font-medium text-gray-700 mb-2">Topics:</p>
+              <div className="mb-4">
+                <p className="text-sm font-semibold text-gray-700 mb-3">Topics:</p>
                 <div className="flex flex-wrap gap-2">
                   {week.topics.map((topic, idx) => (
                     <span
                       key={idx}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
+                      className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 border border-blue-200"
                     >
                       {topic}
                       {week.hours[topic] && (
-                        <span className="ml-2 text-xs text-blue-600">({week.hours[topic]}h)</span>
+                        <span className="ml-2 text-xs font-bold text-blue-600">
+                          ({week.hours[topic]}h)
+                        </span>
                       )}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="mb-3">
-                <p className="text-sm font-medium text-gray-700 mb-1">Goals:</p>
-                <p className="text-sm text-gray-600">{week.goals}</p>
+              <div className="mb-4">
+                <p className="text-sm font-semibold text-gray-700 mb-2">Goals:</p>
+                <p className="text-gray-600 leading-relaxed">{week.goals}</p>
               </div>
 
               {week.checkpointQuestions.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium text-gray-700 mb-2">Checkpoint Questions:</p>
-                  <ul className="list-disc list-inside space-y-1">
+                <div className="bg-amber-50/50 rounded-xl p-4 border border-amber-200/50">
+                  <p className="text-sm font-semibold text-amber-900 mb-3">Checkpoint Questions:</p>
+                  <ul className="space-y-2">
                     {week.checkpointQuestions.map((question, idx) => (
-                      <li key={idx} className="text-sm text-gray-600">
-                        {question}
+                      <li key={idx} className="flex items-start">
+                        <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold mr-3 mt-0.5">
+                          ?
+                        </span>
+                        <span className="text-sm text-gray-700">{question}</span>
                       </li>
                     ))}
                   </ul>
@@ -98,13 +113,18 @@ export default function StudyPlanView({ plan }: StudyPlanViewProps) {
 
       {/* Study Tips */}
       {plan.tips.length > 0 && (
-        <div className="bg-amber-50 rounded-lg p-5">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Study Tips</h3>
-          <ul className="space-y-2">
+        <div className="rounded-2xl p-8 border-2 border-amber-300/50 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50/50">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+            <span className="text-3xl mr-3">💡</span>
+            Study Tips
+          </h3>
+          <ul className="space-y-3">
             {plan.tips.map((tip, idx) => (
               <li key={idx} className="flex items-start">
-                <span className="text-amber-600 mr-2">💡</span>
-                <span className="text-sm text-gray-700">{tip}</span>
+                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 text-white text-xs font-bold mr-3 mt-0.5">
+                  {idx + 1}
+                </span>
+                <span className="text-gray-700 leading-relaxed">{tip}</span>
               </li>
             ))}
           </ul>

@@ -42,7 +42,7 @@ export default function ProblemInput({
           value={problem}
           onChange={(e) => setProblem(e.target.value)}
           placeholder={placeholder}
-          className="w-full h-48 px-5 py-4 glass-strong rounded-2xl focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none text-gray-800 placeholder-gray-400 transition-all"
+          className="w-full h-48 px-5 py-4 rounded-2xl border-2 border-blue-200/50 bg-gradient-to-br from-white to-blue-50/40 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-300 resize-none text-gray-900 placeholder-gray-500 transition-all"
           disabled={loading}
         />
       </div>
@@ -57,7 +57,7 @@ export default function ProblemInput({
             value={solution}
             onChange={(e) => setSolution(e.target.value)}
             placeholder="Paste your solution or attempted work here..."
-            className="w-full h-48 px-5 py-4 glass-strong rounded-2xl focus:ring-2 focus:ring-purple-500/50 focus:border-transparent resize-none text-gray-800 placeholder-gray-400 transition-all"
+            className="w-full h-48 px-5 py-4 rounded-2xl border-2 border-purple-200/50 bg-gradient-to-br from-white to-purple-50/40 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-300 resize-none text-gray-900 placeholder-gray-500 transition-all"
             disabled={loading}
           />
         </div>

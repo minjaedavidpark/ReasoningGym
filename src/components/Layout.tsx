@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export default function Layout({ children, title }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-white">
       {/* Header with glass morphism */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">

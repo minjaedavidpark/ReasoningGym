@@ -85,39 +85,45 @@ export default function PlannerPage() {
     <Layout title="📅 Study Planner">
       <div className="max-w-4xl mx-auto">
         {/* Description */}
-        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">
-            Create Your Custom Study Plan
-          </h2>
-          <ul className="space-y-2 text-sm text-gray-700">
+        <div className="rounded-2xl p-8 mb-8 border-2 border-green-300/50 bg-gradient-to-br from-green-50 via-emerald-50/80 to-green-100/50">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Create Your Custom Study Plan</h2>
+          <ul className="space-y-3 text-gray-700">
             <li className="flex items-start">
-              <span className="text-green-600 mr-2">1.</span>
-              Enter your course name and topics/syllabus
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white text-xs font-bold mr-3 mt-0.5">
+                1
+              </span>
+              <span>Enter your course name and topics/syllabus</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 mr-2">2.</span>
-              Set your exam date and weekly study hours
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white text-xs font-bold mr-3 mt-0.5">
+                2
+              </span>
+              <span>Set your exam date and weekly study hours</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 mr-2">3.</span>
-              Get a day-by-day schedule with spaced repetition
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white text-xs font-bold mr-3 mt-0.5">
+                3
+              </span>
+              <span>Get a day-by-day schedule with spaced repetition</span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-600 mr-2">4.</span>
-              Use checkpoint questions to test yourself
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white text-xs font-bold mr-3 mt-0.5">
+                4
+              </span>
+              <span>Use checkpoint questions to test yourself</span>
             </li>
           </ul>
         </div>
 
         {/* Input Form or Results */}
         {!studyPlan && !plainTextPlan ? (
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <form onSubmit={handleGeneratePlan} className="space-y-5">
+          <div className="rounded-3xl p-8 border-2 border-green-200/50 bg-gradient-to-br from-white via-green-50/30 to-emerald-50/40">
+            <form onSubmit={handleGeneratePlan} className="space-y-6">
               {/* Course Name */}
               <div>
                 <label
                   htmlFor="courseName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-base font-semibold text-gray-800 mb-3"
                 >
                   Course Name
                 </label>
@@ -128,7 +134,7 @@ export default function PlannerPage() {
                   value={formData.courseName}
                   onChange={handleInputChange}
                   placeholder="e.g., CSC458 - Computer Networks"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 placeholder-gray-500 transition-all"
                   required
                   disabled={loading}
                 />
@@ -136,7 +142,10 @@ export default function PlannerPage() {
 
               {/* Topics */}
               <div>
-                <label htmlFor="topics" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="topics"
+                  className="block text-base font-semibold text-gray-800 mb-3"
+                >
                   Topics / Syllabus
                 </label>
                 <textarea
@@ -145,18 +154,18 @@ export default function PlannerPage() {
                   value={formData.topics}
                   onChange={handleInputChange}
                   placeholder="List the topics or paste your syllabus here..."
-                  className="w-full h-32 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                  className="w-full h-40 px-5 py-4 rounded-2xl border-2 border-green-200/50 bg-gradient-to-br from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 placeholder-gray-500 resize-none transition-all"
                   required
                   disabled={loading}
                 />
               </div>
 
               {/* Exam Date and Weekly Hours */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label
                     htmlFor="examDate"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-base font-semibold text-gray-800 mb-3"
                   >
                     Exam Date
                   </label>
@@ -167,7 +176,7 @@ export default function PlannerPage() {
                     value={formData.examDate}
                     onChange={handleInputChange}
                     min={today}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 transition-all"
                     required
                     disabled={loading}
                   />
@@ -176,7 +185,7 @@ export default function PlannerPage() {
                 <div>
                   <label
                     htmlFor="weeklyHours"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-base font-semibold text-gray-800 mb-3"
                   >
                     Weekly Study Hours
                   </label>
@@ -188,7 +197,7 @@ export default function PlannerPage() {
                     onChange={handleInputChange}
                     min="1"
                     max="40"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 transition-all"
                     required
                     disabled={loading}
                   />
@@ -199,7 +208,7 @@ export default function PlannerPage() {
               <div>
                 <label
                   htmlFor="currentLevel"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-base font-semibold text-gray-800 mb-3"
                 >
                   Current Understanding Level (Optional)
                 </label>
@@ -208,7 +217,7 @@ export default function PlannerPage() {
                   name="currentLevel"
                   value={formData.currentLevel}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-5 py-3 rounded-2xl border-2 border-green-200/50 bg-gradient-to-r from-white to-green-50/40 focus:ring-2 focus:ring-green-500/50 focus:border-green-300 text-gray-900 transition-all"
                   disabled={loading}
                 >
                   <option value="">Select (optional)</option>
@@ -222,11 +231,11 @@ export default function PlannerPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-green-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]"
+                className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
-                    <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-6 w-6 mr-3" viewBox="0 0 24 24">
                       <circle
                         className="opacity-25"
                         cx="12"
@@ -253,10 +262,10 @@ export default function PlannerPage() {
         ) : (
           <div>
             {/* Reset Button */}
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-6">
               <button
                 onClick={handleReset}
-                className="text-sm text-green-600 hover:text-green-700 font-medium"
+                className="px-6 py-2 text-sm text-green-600 hover:text-green-700 font-semibold rounded-full hover:bg-green-50 transition-all"
               >
                 Create Another Plan
               </button>
@@ -266,10 +275,12 @@ export default function PlannerPage() {
             {studyPlan ? (
               <StudyPlanView plan={studyPlan} />
             ) : (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Your Study Plan</h3>
-                <div className="prose prose-sm max-w-none">
-                  <pre className="whitespace-pre-wrap text-gray-700 font-sans">{plainTextPlan}</pre>
+              <div className="rounded-3xl p-8 border-2 border-green-200/50 bg-gradient-to-br from-white via-green-50/30 to-emerald-50/40">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Your Study Plan</h3>
+                <div className="prose prose-lg max-w-none">
+                  <pre className="whitespace-pre-wrap text-gray-700 font-sans leading-relaxed">
+                    {plainTextPlan}
+                  </pre>
                 </div>
               </div>
             )}

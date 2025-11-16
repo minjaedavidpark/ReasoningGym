@@ -43,14 +43,16 @@ export default function ChatPanel({
   };
 
   return (
-    <div className="flex flex-col h-[650px] glass-strong rounded-3xl overflow-hidden">
+    <div className="flex flex-col h-[650px] rounded-3xl overflow-hidden border-2 border-blue-200/50 bg-gradient-to-br from-white via-blue-50/20 to-purple-50/30">
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-8 space-y-4">
         {messages.length === 0 ? (
-          <div className="text-center text-gray-500 mt-16">
+          <div className="text-center text-gray-600 mt-16">
             <div className="text-5xl mb-4">💬</div>
-            <p className="text-xl font-medium">Start your conversation with the coach</p>
-            <p className="text-sm text-gray-400 mt-2">Ask questions, share your thinking...</p>
+            <p className="text-xl font-medium text-gray-900">
+              Start your conversation with the coach
+            </p>
+            <p className="text-sm text-gray-600 mt-2">Ask questions, share your thinking...</p>
           </div>
         ) : (
           messages.map((message, index) => (
@@ -62,7 +64,7 @@ export default function ChatPanel({
                 className={`max-w-[85%] rounded-2xl px-6 py-4 ${
                   message.role === 'user'
                     ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white'
-                    : 'glass border border-gray-200 text-gray-800'
+                    : 'bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-50 border-2 border-purple-300/50 text-gray-800'
                 }`}
               >
                 <div className="whitespace-pre-wrap break-words leading-relaxed">
@@ -71,7 +73,7 @@ export default function ChatPanel({
                 {message.timestamp && (
                   <div
                     className={`text-xs mt-2 ${
-                      message.role === 'user' ? 'text-blue-100' : 'text-gray-400'
+                      message.role === 'user' ? 'text-blue-100' : 'text-purple-800'
                     }`}
                   >
                     {message.timestamp.toLocaleTimeString()}
@@ -83,7 +85,7 @@ export default function ChatPanel({
         )}
         {loading && (
           <div className="flex justify-start">
-            <div className="glass border border-gray-200 rounded-2xl px-6 py-4">
+            <div className="bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-50 border-2 border-purple-300/50 rounded-2xl px-6 py-4">
               <div className="flex space-x-2">
                 <div
                   className="w-2.5 h-2.5 bg-gray-400 rounded-full animate-bounce"
@@ -105,7 +107,7 @@ export default function ChatPanel({
       </div>
 
       {/* Input Area */}
-      <div className="glass-strong border-t border-gray-200 p-6">
+      <div className="border-t-2 border-blue-200/50 p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/20">
         {showSolutionButton && onRequestSolution && (
           <div className="mb-4">
             <button
@@ -124,7 +126,7 @@ export default function ChatPanel({
             onChange={(e) => setInput(e.target.value)}
             placeholder={placeholder}
             disabled={loading}
-            className="flex-1 px-5 py-3 glass-strong rounded-full focus:ring-2 focus:ring-blue-500/50 focus:border-transparent placeholder-gray-400 transition-all"
+            className="flex-1 px-5 py-3 rounded-full border-2 border-blue-200/50 bg-gradient-to-r from-white to-blue-50/30 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-300 placeholder-gray-500 text-gray-900 transition-all"
           />
           <button
             type="submit"

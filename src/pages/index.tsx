@@ -16,6 +16,7 @@ export default function Home() {
       ],
       href: '/coach',
       gradient: 'from-blue-500 via-blue-600 to-cyan-500',
+      bodyGradient: 'from-blue-50 via-cyan-50/80 to-blue-100/60',
     },
     {
       title: 'Solution Critique',
@@ -29,6 +30,7 @@ export default function Home() {
       ],
       href: '/critique',
       gradient: 'from-purple-500 via-purple-600 to-pink-500',
+      bodyGradient: 'from-purple-50 via-pink-50/80 to-purple-100/60',
     },
     {
       title: 'Study Planner',
@@ -42,6 +44,7 @@ export default function Home() {
       ],
       href: '/planner',
       gradient: 'from-green-500 via-emerald-600 to-teal-500',
+      bodyGradient: 'from-green-50 via-emerald-50/80 to-green-100/60',
     },
   ];
 
@@ -70,7 +73,7 @@ export default function Home() {
             className="block group"
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            <div className="glass-strong rounded-3xl overflow-hidden hover-lift h-full">
+            <div className="flex flex-col rounded-3xl overflow-hidden hover-lift h-full border-2 border-gray-200/30">
               {/* Card Header with Gradient */}
               <div className={`bg-gradient-to-br ${mode.gradient} p-8 text-white relative`}>
                 <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -80,12 +83,12 @@ export default function Home() {
               </div>
 
               {/* Card Body */}
-              <div className="p-8">
+              <div className={`flex-1 p-8 bg-gradient-to-br ${mode.bodyGradient}`}>
                 <p className="text-gray-700 text-lg mb-6 leading-relaxed">{mode.description}</p>
 
                 <ul className="space-y-3 mb-8">
                   {mode.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start text-gray-600">
+                    <li key={idx} className="flex items-start text-gray-700">
                       <svg
                         className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"
                         fill="currentColor"
@@ -97,7 +100,7 @@ export default function Home() {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span className="text-sm">{feature}</span>
+                      <span className="text-sm font-medium">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -125,7 +128,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="glass rounded-3xl p-12 mb-24">
+      <div className="rounded-3xl p-12 mb-24 border-2 border-blue-200/50 bg-gradient-to-br from-blue-50 via-purple-50/80 to-pink-50">
         <h2 className="text-4xl font-bold tracking-tight text-gray-900 mb-12 text-center">
           Why Reasoning Gym?
         </h2>
@@ -135,7 +138,7 @@ export default function Home() {
             <div className="text-4xl flex-shrink-0">🧠</div>
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Build Real Understanding</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Learn through guided discovery, not passive consumption. Develop problem-solving
                 skills that last.
               </p>
@@ -146,7 +149,7 @@ export default function Home() {
             <div className="text-4xl flex-shrink-0">🎯</div>
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Multi-Agent Intelligence</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Specialized Claude agents work together: decomposer, coach, critic, and planner.
               </p>
             </div>
@@ -156,7 +159,7 @@ export default function Home() {
             <div className="text-4xl flex-shrink-0">✅</div>
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Academic Integrity First</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Designed for learning, not cheating. Hints before answers. Reflection encouraged.
               </p>
             </div>
@@ -166,7 +169,7 @@ export default function Home() {
             <div className="text-4xl flex-shrink-0">📈</div>
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Evidence-Based Learning</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Spaced repetition, active recall, and structured feedback based on learning science.
               </p>
             </div>
@@ -175,7 +178,7 @@ export default function Home() {
       </div>
 
       {/* Ethics Notice */}
-      <div className="glass-strong rounded-2xl p-10 text-center border-2 border-amber-200/50">
+      <div className="rounded-2xl p-10 text-center border-2 border-amber-300/50 bg-gradient-to-br from-amber-50 via-yellow-50/80 to-orange-50/50">
         <div className="text-5xl mb-4">⚠️</div>
         <h3 className="text-2xl font-semibold text-gray-900 mb-3">Academic Integrity Notice</h3>
         <p className="text-gray-700 leading-relaxed max-w-2xl mx-auto">
