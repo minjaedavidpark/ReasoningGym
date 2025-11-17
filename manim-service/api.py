@@ -29,6 +29,96 @@ def health_check():
     return jsonify({"status": "healthy", "service": "manim-visualizer"})
 
 
+@app.route('/generate-dynamic', methods=['POST'])
+def generate_dynamic_visualization():
+    """
+    Generate visualization using AI-generated Manim code
+
+    Request body:
+    {
+        "code": "Python code with GeneratedScene class"
+    }
+    """
+    try:
+        data = request.json
+        code = data.get('code')
+
+        if not code:
+            return jsonify({"error": "No code provided"}), 400
+
+        # Generate unique ID
+        viz_id = str(uuid.uuid4())
+        output_file = f"scene_{viz_id}"
+
+        # Write code to temporary file
+        code_file = MEDIA_DIR / f"{viz_id}.py"
+        with open(code_file, 'w') as f:
+            f.write(code)
+
+        # Execute the generated code
+        result = subprocess.run(
+            [
+                './venv/bin/python',
+                'dynamic_scene_generator.py',
+                str(code_file),
+                output_file
+            ],
+            capture_output=True,
+            text=True,
+            cwd=os.path.dirname(os.path.abspath(__file__)),
+            timeout=60  # 60 second timeout
+        )
+
+        # Clean up code file
+        code_file.unlink()
+
+        if result.returncode != 0:
+            return jsonify({
+                "error": "Failed to generate visualization",
+                "details": result.stderr
+            }), 500
+
+        # Find the generated video file
+        video_path = None
+        possible_paths = [
+            MEDIA_DIR / "videos" / "720p30" / f"{output_file}.mp4",
+            MEDIA_DIR / "videos" / "1080p60" / f"{output_file}.mp4",
+        ]
+
+        for path in possible_paths:
+            if path.exists():
+                video_path = path
+                break
+
+        if not video_path:
+            media_contents = list(MEDIA_DIR.rglob("*.mp4"))
+            return jsonify({
+                "error": "Video file not found",
+                "found_files": [str(p) for p in media_contents[:5]]
+            }), 500
+
+        # Copy to public directory
+        public_file = MEDIA_DIR / f"{viz_id}.mp4"
+        shutil.copy(video_path, public_file)
+
+        return jsonify({
+            "success": True,
+            "video_id": viz_id,
+            "video_url": f"/video/{viz_id}",
+            "file_path": str(public_file)
+        })
+
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            "error": "Visualization generation timed out (>60s)"
+        }), 500
+    except Exception as e:
+        return jsonify({
+            "error": "Internal server error",
+            "details": str(e)
+        }), 500
+
+
 @app.route('/generate', methods=['POST'])
 def generate_visualization():
     """
