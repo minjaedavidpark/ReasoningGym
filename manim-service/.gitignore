@@ -2,7 +2,9 @@ venv/
 __pycache__/
 *.pyc
 media/
+temp/
 *.mp4
 *.png
 *.gif
 .DS_Store
+*.log

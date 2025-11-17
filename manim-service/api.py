@@ -22,6 +22,9 @@ CORS(app)
 MEDIA_DIR = Path("./media")
 MEDIA_DIR.mkdir(exist_ok=True)
 
+TEMP_DIR = Path("./temp")
+TEMP_DIR.mkdir(exist_ok=True)
+
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -50,8 +53,8 @@ def generate_dynamic_visualization():
         viz_id = str(uuid.uuid4())
         output_file = f"scene_{viz_id}"
 
-        # Write code to temporary file
-        code_file = MEDIA_DIR / f"{viz_id}.py"
+        # Write code to temporary file (in temp dir to avoid Flask auto-reload)
+        code_file = TEMP_DIR / f"{viz_id}.py"
         with open(code_file, 'w') as f:
             f.write(code)
 
@@ -249,4 +252,5 @@ def cleanup():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    # Disable debug mode to prevent auto-reload when temp files are created
+    app.run(host='0.0.0.0', port=5001, debug=False)
