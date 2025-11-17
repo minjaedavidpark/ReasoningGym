@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { callClaude, Message } from '@/lib/anthropicClient';
+import { callLLM, Message } from '@/lib/llmClient';
 import { getAgentPrompt } from '@/lib/prompts';
 
 interface CoachRequest {
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     // Initial problem submission - decompose first
     if (problem && !messages) {
       const decomposerPrompt = getAgentPrompt('decomposer');
-      const decompositionResponse = await callClaude(decomposerPrompt, [
+      const decompositionResponse = await callLLM(decomposerPrompt, [
         { role: 'user', content: `Please decompose this problem:\n\n${problem}` },
       ]);
 
@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const coachPrompt = getAgentPrompt('coach');
       const coachingContext = `Problem: ${problem}\n\nProblem Breakdown:\n${decompositionResponse}\n\nStart coaching the student through this problem step by step. Begin with the first step.`;
 
-      const coachResponse = await callClaude(coachPrompt, [
+      const coachResponse = await callLLM(coachPrompt, [
         { role: 'user', content: coachingContext },
       ]);
 
@@ -69,12 +69,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           },
         ];
 
-        const solutionResponse = await callClaude(coachPrompt, solutionRequest);
+        const solutionResponse = await callLLM(coachPrompt, solutionRequest);
         return res.status(200).json({ message: solutionResponse });
       }
 
       // Continue Socratic coaching
-      const response = await callClaude(coachPrompt, messages);
+      const response = await callLLM(coachPrompt, messages);
       return res.status(200).json({ message: response });
     }
 

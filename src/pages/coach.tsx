@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import ProblemInput from '@/components/ProblemInput';
 import ChatPanel, { ChatMessage } from '@/components/ChatPanel';
+import VisualizationPanel from '@/components/VisualizationPanel';
 
 export default function CoachPage() {
   const [started, setStarted] = useState(false);
@@ -198,6 +199,9 @@ export default function CoachPage() {
                 </button>
               </div>
             </div>
+
+            {/* Visualization Panel */}
+            <VisualizationPanel problem={currentProblem} />
 
             {/* Chat Interface */}
             <ChatPanel

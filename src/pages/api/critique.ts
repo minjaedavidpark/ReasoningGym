@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { callClaude } from '@/lib/anthropicClient';
+import { callLLM } from '@/lib/llmClient';
 import { getAgentPrompt } from '@/lib/prompts';
 
 interface CritiqueRequest {
@@ -40,7 +40,7 @@ ${solution}
 
 Please analyze this solution and provide detailed feedback.`;
 
-    const critiqueResponse = await callClaude(criticPrompt, [
+    const critiqueResponse = await callLLM(criticPrompt, [
       { role: 'user', content: critiqueRequest },
     ]);
 

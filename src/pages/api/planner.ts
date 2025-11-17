@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { callClaude } from '@/lib/anthropicClient';
+import { callLLM } from '@/lib/llmClient';
 import { getAgentPrompt } from '@/lib/prompts';
 
 interface PlannerRequest {
@@ -55,7 +55,7 @@ ${currentLevel ? `Current Understanding Level: ${currentLevel}` : ''}
 
 Please create a comprehensive study plan for this student.`;
 
-    const planResponse = await callClaude(
+    const planResponse = await callLLM(
       plannerPrompt,
       [{ role: 'user', content: planningRequest }],
       { maxTokens: 8192 } // Study plans can be longer

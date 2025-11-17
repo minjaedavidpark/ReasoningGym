@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manim Video Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        video {
+            width: 100%;
+            background: #000;
+            border: 2px solid #333;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #log {
+            background: #1e1e1e;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manim Video Direct Test</h1>
+
+    <div class="info">
+        <p><strong>This page tests Manim videos directly without Next.js</strong></p>
+        <p>Service: <span id="service-status">Checking...</span></p>
+    </div>
+
+    <button onclick="generateVideo()">Generate Test Video</button>
+    <button onclick="clearLog()">Clear Log</button>
+
+    <div id="video-container" style="margin: 20px 0; display: none;">
+        <h3>Generated Video:</h3>
+        <video id="test-video" controls autoplay>
+            Your browser does not support video.
+        </video>
+        <p id="video-url" style="font-size: 12px; color: #666;"></p>
+    </div>
+
+    <h3>Console Log:</h3>
+    <div id="log"></div>
+
+    <script>
+        const log = document.getElementById('log');
+
+        function addLog(message, type = 'info') {
+            const colors = {
+                'info': '#0f0',
+                'error': '#f00',
+                'success': '#0ff'
+            };
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML += `<div style="color: ${colors[type]}">[${timestamp}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function clearLog() {
+            log.innerHTML = '';
+        }
+
+        // Check service status
+        fetch('http://localhost:5001/health')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('service-status').textContent = '✅ Running';
+                document.getElementById('service-status').style.color = 'green';
+                addLog('Service is healthy', 'success');
+            })
+            .catch(e => {
+                document.getElementById('service-status').textContent = '❌ Not Running';
+                document.getElementById('service-status').style.color = 'red';
+                addLog('Service is not accessible: ' + e.message, 'error');
+            });
+
+        async function generateVideo() {
+            addLog('Generating video...');
+
+            try {
+                const response = await fetch('http://localhost:5001/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: 'generic',
+                        content: 'Test Problem: This is a simple test to verify Manim is working correctly.'
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    addLog('Generation failed: ' + (error.error || 'Unknown error'), 'error');
+                    return;
+                }
+
+                const result = await response.json();
+                addLog('Video generated successfully!', 'success');
+                addLog('Video ID: ' + result.video_id);
+
+                const videoUrl = 'http://localhost:5001' + result.video_url;
+                addLog('Video URL: ' + videoUrl);
+
+                // Show video
+                const videoContainer = document.getElementById('video-container');
+                const video = document.getElementById('test-video');
+                const urlDisplay = document.getElementById('video-url');
+
+                video.src = videoUrl;
+                urlDisplay.textContent = 'URL: ' + videoUrl;
+                videoContainer.style.display = 'block';
+
+                // Add event listeners
+                video.onloadstart = () => addLog('Video loading started...');
+                video.oncanplay = () => addLog('Video can play!', 'success');
+                video.onerror = (e) => {
+                    addLog('Video error: ' + e.message, 'error');
+                    console.error('Video error:', e);
+                };
+                video.onended = () => addLog('Video playback ended');
+
+            } catch (error) {
+                addLog('Exception: ' + error.message, 'error');
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
