@@ -4,6 +4,7 @@ import path from 'path';
 
 interface VisualizeRequest {
   problem: string;
+  image?: string;
   problemType?: 'equation' | 'graph' | 'geometry' | 'number_line' | 'function' | 'generic';
 }
 
@@ -41,13 +42,14 @@ export default async function handler(
   }
 
   try {
-    const { problem }: VisualizeRequest = req.body;
+    const { problem, image }: VisualizeRequest = req.body;
 
     log(`Received request for problem: ${problem?.substring(0, 100)}`);
+    if (image) log('Image provided in request');
 
-    if (!problem) {
-      log('ERROR: No problem provided');
-      return res.status(400).json({ error: 'Problem is required' });
+    if (!problem && !image) {
+      log('ERROR: No problem or image provided');
+      return res.status(400).json({ error: 'Problem or image is required' });
     }
 
     let currentCode = '';
@@ -65,7 +67,12 @@ export default async function handler(
           log(`Retrying with previous error: ${lastError.substring(0, 100)}`);
         }
 
-        const { code, explanation } = await generateManimCode(problem, lastError, currentCode);
+        const { code, explanation } = await generateManimCode(
+          problem,
+          image,
+          lastError,
+          currentCode
+        );
         currentCode = code;
         currentExplanation = explanation;
 

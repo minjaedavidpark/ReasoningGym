@@ -79,7 +79,7 @@ export default function Home() {
                 <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {mode.emoji}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight">{mode.title}</h2>
+                <h2 className="text-3xl font-bold tracking-tight min-h-[4.5rem]">{mode.title}</h2>
               </div>
 
               {/* Card Body */}

@@ -2,23 +2,29 @@ import { useState } from 'react';
 
 interface VisualizationPanelProps {
   problem: string;
+  image?: string;
   onVisualize?: () => void;
 }
 
-export default function VisualizationPanel({ problem, onVisualize }: VisualizationPanelProps) {
+export default function VisualizationPanel({
+  problem,
+  image,
+  onVisualize,
+}: VisualizationPanelProps) {
   const [loading, setLoading] = useState(false);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const generateVisualization = async () => {
-    if (!problem || problem.trim().length === 0) {
-      console.error('[VisualizationPanel] No problem provided');
-      setError('Please provide a problem first');
+    if ((!problem || problem.trim().length === 0) && !image) {
+      console.error('[VisualizationPanel] No problem or image provided');
+      setError('Please provide a problem or image first');
       return;
     }
 
     console.log('[VisualizationPanel] Starting visualization generation');
     console.log('[VisualizationPanel] Problem:', problem.substring(0, 100));
+    if (image) console.log('[VisualizationPanel] Image provided');
 
     setLoading(true);
     setError(null);
@@ -35,7 +41,7 @@ export default function VisualizationPanel({ problem, onVisualize }: Visualizati
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ problem }),
+        body: JSON.stringify({ problem, image }),
       });
 
       console.log('[VisualizationPanel] Response status:', response.status);
@@ -69,14 +75,14 @@ export default function VisualizationPanel({ problem, onVisualize }: Visualizati
   };
 
   return (
-    <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 rounded-2xl shadow-lg border border-purple-100">
+    <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 rounded-2xl shadow-lg border border-purple-100 dark:border-gray-700">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
           Visual Explanation
         </h3>
         <button
           onClick={generateVisualization}
-          disabled={loading || !problem}
+          disabled={loading || (!problem && !image)}
           className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
         >
           {loading ? (
@@ -125,7 +131,7 @@ export default function VisualizationPanel({ problem, onVisualize }: Visualizati
       )}
 
       {!videoUrl && !loading && !error && (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
           <div className="text-6xl mb-4">📊</div>
           <p className="text-lg font-medium mb-2">No visualization yet</p>
           <p className="text-sm">

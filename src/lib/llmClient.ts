@@ -1,9 +1,19 @@
 import { callClaude, streamClaude } from './anthropicClient';
 import { callOpenAI, streamOpenAI } from './openaiClient';
 
+export interface ContentBlock {
+  type: 'text' | 'image';
+  text?: string;
+  source?: {
+    type: 'base64';
+    media_type: string;
+    data: string;
+  };
+}
+
 export interface Message {
   role: 'user' | 'assistant';
-  content: string;
+  content: string | ContentBlock[];
 }
 
 export interface StreamCallback {
@@ -23,7 +33,7 @@ export const getProvider = (): LLMProvider => {
 
 // Model mapping for each provider
 const DEFAULT_MODELS = {
-  anthropic: 'claude-sonnet-4-20250514',
+  anthropic: 'claude-3-5-sonnet-20240620',
   openai: 'gpt-4o',
 };
 
@@ -51,9 +61,11 @@ export async function callLLM(
   };
 
   if (provider === 'openai') {
-    return callOpenAI(systemPrompt, messages, llmOptions);
+    // Cast to any to avoid strict type checking issues between similar interfaces
+    return callOpenAI(systemPrompt, messages as any, llmOptions);
   } else {
-    return callClaude(systemPrompt, messages, llmOptions);
+    // Cast to any to avoid strict type checking issues between similar interfaces
+    return callClaude(systemPrompt, messages as any, llmOptions);
   }
 }
 
@@ -82,9 +94,11 @@ export async function streamLLM(
   };
 
   if (provider === 'openai') {
-    return streamOpenAI(systemPrompt, messages, callback, llmOptions);
+    // Cast to any to avoid strict type checking issues between similar interfaces
+    return streamOpenAI(systemPrompt, messages as any, callback, llmOptions);
   } else {
-    return streamClaude(systemPrompt, messages, callback, llmOptions);
+    // Cast to any to avoid strict type checking issues between similar interfaces
+    return streamClaude(systemPrompt, messages as any, callback, llmOptions);
   }
 }
 

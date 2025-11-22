@@ -4,6 +4,7 @@ import { getAgentPrompt } from '@/lib/prompts';
 
 interface CoachRequest {
   problem?: string;
+  image?: string; // Base64 encoded image
   messages?: Message[];
   requestSolution?: boolean;
 }
@@ -22,13 +23,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   try {
-    const { problem, messages, requestSolution }: CoachRequest = req.body;
+    const { problem, image, messages, requestSolution }: CoachRequest = req.body;
 
     // Initial problem submission - decompose first
-    if (problem && !messages) {
+    if ((problem || image) && !messages) {
       const decomposerPrompt = getAgentPrompt('decomposer');
+
+      // Construct user message content
+      let userContent: any[] = [];
+      if (problem) {
+        userContent.push({ type: 'text', text: `Please decompose this problem:\n\n${problem}` });
+      } else {
+        userContent.push({
+          type: 'text',
+          text: `Please decompose the problem shown in this image.`,
+        });
+      }
+
+      if (image) {
+        // Extract base64 data and media type
+        // Assuming image string is like "data:image/png;base64,..."
+        const matches = image.match(/^data:(.+);base64,(.+)$/);
+        if (matches) {
+          userContent.push({
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: matches[1],
+              data: matches[2],
+            },
+          });
+        }
+      }
+
       const decompositionResponse = await callLLM(decomposerPrompt, [
-        { role: 'user', content: `Please decompose this problem:\n\n${problem}` },
+        { role: 'user', content: userContent as any },
       ]);
 
       // Parse the decomposition
@@ -42,10 +71,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       // Now start the Socratic coaching
       const coachPrompt = getAgentPrompt('coach');
-      const coachingContext = `Problem: ${problem}\n\nProblem Breakdown:\n${decompositionResponse}\n\nStart coaching the student through this problem step by step. Begin with the first step.`;
+      const coachingContext = `Problem: ${problem || 'See image'}\n\nProblem Breakdown:\n${decompositionResponse}\n\nStart coaching the student through this problem step by step. Begin with the first step.`;
+
+      // For coaching, we also want to provide the image context if available
+      let coachUserContent: any[] = [{ type: 'text', text: coachingContext }];
+
+      if (image) {
+        const matches = image.match(/^data:(.+);base64,(.+)$/);
+        if (matches) {
+          coachUserContent.push({
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: matches[1],
+              data: matches[2],
+            },
+          });
+        }
+      }
 
       const coachResponse = await callLLM(coachPrompt, [
-        { role: 'user', content: coachingContext },
+        { role: 'user', content: coachUserContent as any },
       ]);
 
       return res.status(200).json({
@@ -80,7 +126,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     return res.status(400).json({
       message: 'Invalid request',
-      error: 'Either problem or messages must be provided',
+      error: 'Either problem, image, or messages must be provided',
     });
   } catch (error) {
     console.error('Error in coach API:', error);

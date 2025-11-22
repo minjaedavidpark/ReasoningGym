@@ -18,6 +18,7 @@ interface GenerateCodeResponse {
  */
 export async function generateManimCode(
   problem: string,
+  image?: string,
   previousError?: string,
   previousCode?: string
 ): Promise<{ code: string; explanation: string }> {
@@ -264,14 +265,39 @@ Respond with:
 
 Be creative and make it educational!`;
 
-  let userMessage = `Generate a Manim visualization for this problem:\n\n${problem}`;
+  let userMessage = `Generate a Manim visualization for this problem:\n\n${problem || 'See image'}`;
 
   if (previousError && previousCode) {
     userMessage += `\n\nPREVIOUS ATTEMPT FAILED:\n\nCode:\n${previousCode}\n\nError:\n${previousError}\n\nPlease fix the code to resolve this error. Ensure all syntax is correct and all objects are properly initialized.`;
   }
 
   try {
-    const response = await callLLM(systemPrompt, [{ role: 'user', content: userMessage }], {
+    let messages: any[] = [{ role: 'user', content: userMessage }];
+
+    if (image) {
+      // Construct multimodal message
+      const matches = image.match(/^data:(.+);base64,(.+)$/);
+      if (matches) {
+        messages = [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: userMessage },
+              {
+                type: 'image',
+                source: {
+                  type: 'base64',
+                  media_type: matches[1],
+                  data: matches[2],
+                },
+              },
+            ],
+          },
+        ];
+      }
+    }
+
+    const response = await callLLM(systemPrompt, messages, {
       temperature: 0.7,
       maxTokens: 2000,
     });
@@ -355,7 +381,12 @@ export default async function handler(
   }
 
   try {
-    const { problem, previousError, previousCode }: GenerateCodeRequest = req.body;
+    const {
+      problem,
+      image,
+      previousError,
+      previousCode,
+    }: GenerateCodeRequest & { image?: string } = req.body;
 
     console.log('[Generate Manim Code] Received request for problem:', problem?.substring(0, 100));
     if (previousError) {
@@ -369,7 +400,12 @@ export default async function handler(
       return res.status(400).json({ error: 'Problem is required' });
     }
 
-    const { code, explanation } = await generateManimCode(problem, previousError, previousCode);
+    const { code, explanation } = await generateManimCode(
+      problem,
+      image,
+      previousError,
+      previousCode
+    );
 
     console.log('[Generate Manim Code] Generated code length:', code.length);
     console.log('[Generate Manim Code] Explanation:', explanation);

@@ -9,16 +9,18 @@ export default function CoachPage() {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentProblem, setCurrentProblem] = useState('');
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
 
-  const handleStartCoaching = async (problem: string) => {
+  const handleStartCoaching = async (problem: string, image?: string) => {
     setCurrentProblem(problem);
+    setCurrentImage(image || null);
     setLoading(true);
 
     try {
       const response = await fetch('/api/coach', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ problem }),
+        body: JSON.stringify({ problem, image }),
       });
 
       const data = await response.json();
@@ -132,6 +134,7 @@ export default function CoachPage() {
     setStarted(false);
     setMessages([]);
     setCurrentProblem('');
+    setCurrentImage(null);
   };
 
   return (
@@ -190,6 +193,15 @@ export default function CoachPage() {
                   <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
                     {currentProblem}
                   </p>
+                  {currentImage && (
+                    <div className="mt-4 rounded-xl overflow-hidden border-2 border-blue-200 dark:border-blue-700 max-w-md">
+                      <img
+                        src={currentImage}
+                        alt="Problem"
+                        className="w-full h-auto bg-gray-100 dark:bg-gray-800"
+                      />
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={handleReset}
@@ -201,7 +213,7 @@ export default function CoachPage() {
             </div>
 
             {/* Visualization Panel */}
-            <VisualizationPanel problem={currentProblem} />
+            <VisualizationPanel problem={currentProblem} image={currentImage || undefined} />
 
             {/* Chat Interface */}
             <ChatPanel

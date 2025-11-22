@@ -5,9 +5,19 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
+export interface ContentBlock {
+  type: 'text' | 'image';
+  text?: string;
+  source?: {
+    type: 'base64';
+    media_type: string;
+    data: string;
+  };
+}
+
 export interface Message {
   role: 'user' | 'assistant';
-  content: string;
+  content: string | ContentBlock[];
 }
 
 export interface StreamCallback {
@@ -29,15 +39,41 @@ export async function callClaude(
   }
 ): Promise<string> {
   try {
+    const anthropicMessages = messages.map((msg) => {
+      if (Array.isArray(msg.content)) {
+        return {
+          role: msg.role,
+          content: msg.content.map((block) => {
+            if (block.type === 'image' && block.source) {
+              return {
+                type: 'image' as const,
+                source: {
+                  type: 'base64' as const,
+                  media_type: block.source.media_type as
+                    | 'image/jpeg'
+                    | 'image/png'
+                    | 'image/gif'
+                    | 'image/webp',
+                  data: block.source.data,
+                },
+              };
+            }
+            return { type: 'text' as const, text: block.text || '' };
+          }),
+        };
+      }
+      return {
+        role: msg.role,
+        content: msg.content,
+      };
+    });
+
     const response = await anthropic.messages.create({
-      model: options?.model || 'claude-sonnet-4-20250514',
+      model: options?.model || 'claude-3-5-sonnet-20240620',
       max_tokens: options?.maxTokens || 4096,
       temperature: options?.temperature || 1,
       system: systemPrompt,
-      messages: messages.map((msg) => ({
-        role: msg.role,
-        content: msg.content,
-      })),
+      messages: anthropicMessages,
     });
 
     const textContent = response.content.find((block) => block.type === 'text');
@@ -66,15 +102,41 @@ export async function streamClaude(
   }
 ): Promise<void> {
   try {
+    const anthropicMessages = messages.map((msg) => {
+      if (Array.isArray(msg.content)) {
+        return {
+          role: msg.role,
+          content: msg.content.map((block) => {
+            if (block.type === 'image' && block.source) {
+              return {
+                type: 'image' as const,
+                source: {
+                  type: 'base64' as const,
+                  media_type: block.source.media_type as
+                    | 'image/jpeg'
+                    | 'image/png'
+                    | 'image/gif'
+                    | 'image/webp',
+                  data: block.source.data,
+                },
+              };
+            }
+            return { type: 'text' as const, text: block.text || '' };
+          }),
+        };
+      }
+      return {
+        role: msg.role,
+        content: msg.content,
+      };
+    });
+
     const stream = await anthropic.messages.stream({
-      model: options?.model || 'claude-sonnet-4-20250514',
+      model: options?.model || 'claude-3-5-sonnet-20240620',
       max_tokens: options?.maxTokens || 4096,
       temperature: options?.temperature || 1,
       system: systemPrompt,
-      messages: messages.map((msg) => ({
-        role: msg.role,
-        content: msg.content,
-      })),
+      messages: anthropicMessages,
     });
 
     stream.on('text', (text) => {

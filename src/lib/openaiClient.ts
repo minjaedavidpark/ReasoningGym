@@ -5,9 +5,19 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 });
 
+export interface ContentBlock {
+  type: 'text' | 'image';
+  text?: string;
+  source?: {
+    type: 'base64';
+    media_type: string;
+    data: string;
+  };
+}
+
 export interface Message {
   role: 'user' | 'assistant';
-  content: string;
+  content: string | ContentBlock[];
 }
 
 export interface StreamCallback {
@@ -29,17 +39,34 @@ export async function callOpenAI(
   }
 ): Promise<string> {
   try {
+    const openAIMessages = messages.map((msg) => {
+      if (Array.isArray(msg.content)) {
+        return {
+          role: msg.role,
+          content: msg.content.map((block) => {
+            if (block.type === 'image' && block.source) {
+              return {
+                type: 'image_url',
+                image_url: {
+                  url: `data:${block.source.media_type};base64,${block.source.data}`,
+                },
+              };
+            }
+            return { type: 'text', text: block.text || '' };
+          }),
+        };
+      }
+      return {
+        role: msg.role,
+        content: msg.content,
+      };
+    });
+
     const response = await openai.chat.completions.create({
       model: options?.model || 'gpt-4o',
       max_tokens: options?.maxTokens || 4096,
       temperature: options?.temperature ?? 1,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        ...messages.map((msg) => ({
-          role: msg.role,
-          content: msg.content,
-        })),
-      ],
+      messages: [{ role: 'system', content: systemPrompt }, ...(openAIMessages as any)],
     });
 
     const messageContent = response.choices[0]?.message?.content;
@@ -68,17 +95,34 @@ export async function streamOpenAI(
   }
 ): Promise<void> {
   try {
+    const openAIMessages = messages.map((msg) => {
+      if (Array.isArray(msg.content)) {
+        return {
+          role: msg.role,
+          content: msg.content.map((block) => {
+            if (block.type === 'image' && block.source) {
+              return {
+                type: 'image_url',
+                image_url: {
+                  url: `data:${block.source.media_type};base64,${block.source.data}`,
+                },
+              };
+            }
+            return { type: 'text', text: block.text || '' };
+          }),
+        };
+      }
+      return {
+        role: msg.role,
+        content: msg.content,
+      };
+    });
+
     const stream = await openai.chat.completions.create({
       model: options?.model || 'gpt-4o',
       max_tokens: options?.maxTokens || 4096,
       temperature: options?.temperature ?? 1,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        ...messages.map((msg) => ({
-          role: msg.role,
-          content: msg.content,
-        })),
-      ],
+      messages: [{ role: 'system', content: systemPrompt }, ...(openAIMessages as any)],
       stream: true,
     });
 
